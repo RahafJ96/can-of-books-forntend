@@ -4,7 +4,10 @@ import IsLoadingAndError from './IsLoadingAndError';
 import Login from './components/Login';
 import Profile from './components/Profile';
 import Logout from './components/Logout';
+import { withAuth0 } from '@auth0/auth0-react';
+import BestBooks from './components/BestBooks';
 import Footer from './Footer';
+
 import {
   BrowserRouter as Router,
   Switch,
@@ -12,27 +15,50 @@ import {
 } from "react-router-dom";
 
 class App extends React.Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      show: false
+    }
+  };
+
 
   render() {
-    console.log('app', this.props);
-    return(
+    // const  show  = false;
+    // console.log('app', this.props.auth0);
+
+    return (
       <>
         <Router>
           <IsLoadingAndError>
             <Header />
-            <h1>Auth0 App</h1>
+            <h1>Welcome</h1>
             <Switch>
-            <Route exact path="/">
-                <Login/>
+              <Route exact path="/">
                 {/* TODO: if the user is logged in, render the `BestBooks` component, if they are not, render the `Login` component */}
-              </Route>
-              <Route exact path="/profile">
-                <Login/>
-                {/* TODO: if the user is logged in, render the `BestBooks` component, if they are not, render the `Login` component */}
-                <Profile/>
-                <Logout/>
-              </Route>
+                { 
+                (this.props.auth0.isAuthenticated && 
+                  <>
+                  <BestBooks/>
+                <Logout />
+                    </>
+                )}
+                {!this.props.auth0.isAuthenticated && (
+                  <>
+                  <Login/>
+                    </>
+                )}
+                </Route>
+
               {/* TODO: add a route with a path of '/profile' that renders a `Profile` component */}
+              <Route exact path="/profile">
+                {this.props.auth0.isAuthenticated && (
+                  <>
+                  <Profile/>
+                  </>
+                )}
+
+              </Route>
             </Switch>
             <Footer />
           </IsLoadingAndError>
@@ -42,4 +68,4 @@ class App extends React.Component {
   }
 }
 
-export default App;
+export default withAuth0(App);
