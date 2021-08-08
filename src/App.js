@@ -22,7 +22,11 @@ class App extends React.Component {
             <Header />
             <h1>Auth0 App</h1>
             <Switch>
-              <Route exact path="/">
+            <Route exact path="/">
+                <Login/>
+                {/* TODO: if the user is logged in, render the `BestBooks` component, if they are not, render the `Login` component */}
+              </Route>
+              <Route exact path="/profile">
                 <Login/>
                 {/* TODO: if the user is logged in, render the `BestBooks` component, if they are not, render the `Login` component */}
                 <Profile/>
