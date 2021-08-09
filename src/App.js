@@ -1,12 +1,15 @@
 import React from 'react';
 import Header from './Header';
+import './App.css';
 import IsLoadingAndError from './IsLoadingAndError';
 import Login from './components/Login';
 import Profile from './components/Profile';
-import Logout from './components/Logout';
+// import Logout from './components/Logout';
 import { withAuth0 } from '@auth0/auth0-react';
 import BestBooks from './components/BestBooks';
 import Footer from './Footer';
+import { Navbar } from 'react-bootstrap';
+
 
 import {
   BrowserRouter as Router,
@@ -29,18 +32,19 @@ class App extends React.Component {
 
     return (
       <>
+      <section>
         <Router>
           <IsLoadingAndError>
             <Header />
-            <h1>Welcome</h1>
             <Switch>
+            
               <Route exact path="/">
                 {/* TODO: if the user is logged in, render the `BestBooks` component, if they are not, render the `Login` component */}
                 { 
                 (this.props.auth0.isAuthenticated && 
                   <>
                   <BestBooks/>
-                <Logout />
+                {/* <Logout /> */}
                     </>
                 )}
                 {!this.props.auth0.isAuthenticated && (
@@ -60,9 +64,10 @@ class App extends React.Component {
 
               </Route>
             </Switch>
-            <Footer />
           </IsLoadingAndError>
         </Router>
+        </section>
+            <Footer />
       </>
     );
   }

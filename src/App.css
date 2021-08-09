@@ -1,0 +1,25 @@
+section {
+    background-image: url("https://www.detroitlabs.com/wp-content/uploads/2018/02/alfons-morales-YLSwjSy7stw-unsplash.jpg");
+    background-color: #cccccc;
+    height: 800px;
+   }
+
+.btnLog{
+    float: right;
+}
+
+.cardProfile{
+    margin-left: 38%;
+    margin-top: 2%;
+}
+
+.btnLogin{
+    margin-left:35%;
+    margin-top: 10%;
+    width: 30%;
+}
+
+.txtLongin{
+    margin-top: 5%;
+    color: whitesmoke;
+}

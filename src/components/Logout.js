@@ -1,5 +1,8 @@
 import React from 'react';
 import { useAuth0 } from '@auth0/auth0-react';
+import { Button } from 'react-bootstrap';
+import '../App.css';
+
 
 function LogoutButton() {
   const {
@@ -8,9 +11,10 @@ function LogoutButton() {
   } = useAuth0();
 
   return isAuthenticated && (
-    <button onClick={() => {
+    <Button  className="justify-content-end" variant="warning" size="md" onClick={() => {
       logout({ returnTo: window.location.origin });
-    }}>Log out</button>
+    }}>Log out</Button>
+
   );
 }
 
