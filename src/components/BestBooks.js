@@ -43,7 +43,7 @@ class BestBooks extends React.Component {
         <p className="text-center" style={{ backgroundColor: 'white', }} >Here you can find all your favorite Books</p>
 
         <Carousel>
-          {this.state.booksData.map((book, idx) => {
+          {this.state.booksData.map(element => {
 
             <Carousel.Item>
               <img
