@@ -73,19 +73,23 @@ class BestBooks extends React.Component {
   }
 
 
-  handleDeleteBook = (idx) => {
+  handleDeleteBook = (index) => {
     const dataDelete ={
       email: this.state.email,
     }
-console.log(idx);
-    axios.delete(`http://localhost:3010/addbooks/${idx}`,body).then(res => {
+    axios.delete(`http://localhost:3010/deletebooks/${index}`,{params:dataDelete}).
+    then(result => {
 
-      if (res.data.ok === 1) {
-        const tempBookObj = this.state.booksData.filter(book => book._id !== bookId);
-        this.setState({
-          booksData: tempBookObj
-        });
-      }
+      this.setState({
+        books: result.dataDelete
+      })
+
+      // if (res.data.ok === 1) {
+      //   const tempBookObj = this.state.booksData.filter(book => book._id !== bookId);
+      //   this.setState({
+      //     booksData: tempBookObj
+      //   });
+      // }
     }).catch(error => alert(error))
   }
 
