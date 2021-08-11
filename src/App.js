@@ -4,13 +4,10 @@ import './App.css';
 import IsLoadingAndError from './IsLoadingAndError';
 import Login from './components/Login';
 import Profile from './components/Profile';
-// import Logout from './components/Logout';
 import { withAuth0 } from '@auth0/auth0-react';
 import BestBooks from './components/BestBooks';
+import AddBook from './components/AddBook';
 import Footer from './Footer';
-import { Navbar } from 'react-bootstrap';
-
-
 import {
   BrowserRouter as Router,
   Switch,
@@ -44,6 +41,7 @@ class App extends React.Component {
                 (this.props.auth0.isAuthenticated && 
                   <>
                   <BestBooks/>
+                  {/* <AddBook/> */}
                 {/* <Logout /> */}
                     </>
                 )}
