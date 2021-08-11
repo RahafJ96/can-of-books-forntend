@@ -11,6 +11,7 @@ class BestBooks extends React.Component {
     super(props);
     this.state = {
       books: [],
+      email:"",
       numberOfBooks: 0,
       displayAddModal: false
     };
@@ -31,8 +32,8 @@ class BestBooks extends React.Component {
 
           });
           // let test=dataResults.data[0].books;
-          console.log(dataResults.data);
-          console.log(dataResults.data.books);
+          console.log('data',dataResults.data);
+          // console.log(dataResults.data.books);
           // console.log(dataResults.data[0].books[0].title);
           // console.log(dataResults.data[0].books.title);
 
@@ -61,9 +62,9 @@ class BestBooks extends React.Component {
     };
 
     axios
-    .post(`http://localhost:3010/addbooks`, body)
+    .post(`http://localhost:3010/books`, body)
     .then(result => {
-        console.log(result.data);
+        console.log('result data',result.data);
       // this.state.booksData.push(booksData.data);
       this.setState({
         books: result.data
@@ -74,15 +75,19 @@ class BestBooks extends React.Component {
 
 
   handleDeleteBook = (index) => {
-    const dataDelete ={
-      email: this.state.email,
+    console.log('X');
+    const {user}=this.props.auth0;
+    const data ={
+      email: user.email,
     }
-    axios.delete(`http://localhost:3010/deletebooks/${index}`,{params:dataDelete}).
+    axios.delete(`http://localhost:3010/books/${index}`,{params:data}).
     then(result => {
 
       this.setState({
-        books: result.dataDelete
+        books: result.data
       })
+      console.log('hello inside delete func',this.state.books);
+
 
       // if (res.data.ok === 1) {
       //   const tempBookObj = this.state.booksData.filter(book => book._id !== bookId);
@@ -115,14 +120,17 @@ class BestBooks extends React.Component {
                     src={value.img_url}
                     alt="Book"
                   />
-                  <Carousel.Caption key={idx} >
+                  <Carousel.Caption  >
                     <h3 style={{ fontSize: '18px', backgroundColor: "#333", width: "34%", textAlign: 'center', marginLeft: "34%" }}>{value.title}</h3>
                     <p style={{ fontSize: '12px', backgroundColor: "#333", width: "34%", textAlign: 'center', marginLeft: "34%" }}>{value.description}</p>
+                   <div key={idx}>
                     <Button variant="secondary" onClick={() => this.handleDeleteBook(idx)}>Delete</Button>
+                    </div>
                   </Carousel.Caption>
                 </Carousel.Item>
               )}
-          </Carousel >                        </>
+          </Carousel >                       
+          </>
       </div>
     )
   }
