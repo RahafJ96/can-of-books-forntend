@@ -6,7 +6,6 @@ import Login from './components/Login';
 import Profile from './components/Profile';
 import { withAuth0 } from '@auth0/auth0-react';
 import BestBooks from './components/BestBooks';
-import AddBook from './components/AddBook';
 import Footer from './Footer';
 import {
   BrowserRouter as Router,
