@@ -13,7 +13,9 @@ class BestBooks extends React.Component {
       books: [],
       email:"",
       numberOfBooks: 0,
-      displayAddModal: false
+      displayAddModal: false,
+      showUpdateFormflag: false,
+      idx: -1
     };
   }
   componentDidMount = () => {
@@ -23,7 +25,7 @@ class BestBooks extends React.Component {
     console.log('user:', user);
 
     axios.
-      get(`http://localhost:3010/books?email=${user.email}`)
+      get(`${process.env.REACT_SERVER_URL}/books?email=${user.email}`)
       .then(
         dataResults => {
           this.setState({
@@ -62,7 +64,7 @@ class BestBooks extends React.Component {
     };
 
     axios
-    .post(`http://localhost:3010/books`, body)
+    .post(`${process.env.REACT_SERVER_URL}/books`, body)
     .then(result => {
         console.log('result data',result.data);
       // this.state.booksData.push(booksData.data);
@@ -80,7 +82,7 @@ class BestBooks extends React.Component {
     const data ={
       email: user.email,
     }
-    axios.delete(`http://localhost:3010/books/${index}`,{params:data}).
+    axios.delete(`${process.env.REACT_SERVER_URL}/books/${index}`,{params:data}).
     then(result => {
 
       this.setState({
@@ -88,14 +90,40 @@ class BestBooks extends React.Component {
       })
       console.log('hello inside delete func',this.state.books);
 
-
-      // if (res.data.ok === 1) {
-      //   const tempBookObj = this.state.booksData.filter(book => book._id !== bookId);
-      //   this.setState({
-      //     booksData: tempBookObj
-      //   });
-      // }
     }).catch(error => alert(error))
+  }
+
+  showUpdateForm = (index) => {
+    // show the update form
+    this.setState({
+      showUpdateFormflag : true,
+      title : this.state.books[index].title,
+      description : this.state.books[index].description,
+      status: this.state.books[index].status,
+      idx : index
+    })
+    
+  }
+
+  updateBook = (event) => {
+    // send req to the server
+    event.preventDefault();
+    const updatedCatData = {
+      catName : event.target.catName.value,
+      catBreed: event.target.catBreed.value,
+      ownerName: this.state.name
+    }
+    axios
+    .put(`${this.state.server}/updateCat/${this.state.idx}`,updatedCatData)
+    .then(result =>{
+      // console.log(result.data);
+      this.setState({
+        cats : result.data
+      })
+    })
+    .catch(err => {
+      console.log(err);
+    })
   }
 
   render() {

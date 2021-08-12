@@ -27,9 +27,7 @@ class FormModal extends React.Component {
                                 <Form.Label>Book Image</Form.Label>
                                 <Form.Control name="img_url" type="text" placeholder="Enter the image URL" />
                             </Form.Group>
-                            <Button variant="primary" type="submit">
-                                Add Book
-                            </Button>
+                            <Button variant="primary" type="submit">Add Book</Button>
                         </Form>
                     </Modal.Body>
                     <Modal.Footer>
