@@ -4,14 +4,14 @@ import axios from 'axios';
 import { withAuth0 } from '@auth0/auth0-react';
 import FormModal from './BookFormModal';
 import { Button } from 'react-bootstrap';
-
+import UpdatedForm from './UpdatedForm';
 
 class BestBooks extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
       books: [],
-      email:"",
+      email: "",
       numberOfBooks: 0,
       displayAddModal: false,
       showUpdateFormflag: false,
@@ -24,9 +24,7 @@ class BestBooks extends React.Component {
 
     console.log('user:', user);
 
-    axios.
-      get(`${process.env.REACT_SERVER_URL}/books?email=${user.email}`)
-      .then(
+    axios.get(`http://localhost:3010/books?email=${user.email}`).then(
         dataResults => {
           this.setState({
 
@@ -34,7 +32,7 @@ class BestBooks extends React.Component {
 
           });
           // let test=dataResults.data[0].books;
-          console.log('data',dataResults.data);
+          console.log('data', dataResults.data);
           // console.log(dataResults.data.books);
           // console.log(dataResults.data[0].books[0].title);
           // console.log(dataResults.data[0].books.title);
@@ -45,8 +43,8 @@ class BestBooks extends React.Component {
 
 
   handleDisplayModal = () => {
-    this.setState({ 
-      displayAddModal: !this.state.displayAddModal 
+    this.setState({
+      displayAddModal: !this.state.displayAddModal
     });
   }
 
@@ -64,66 +62,69 @@ class BestBooks extends React.Component {
     };
 
     axios
-    .post(`${process.env.REACT_SERVER_URL}/books`, body)
-    .then(result => {
-        console.log('result data',result.data);
-      // this.state.booksData.push(booksData.data);
-      this.setState({
-        books: result.data
-      });
-    })
-    .catch(error => alert(error));
+      .post(`http://localhost:3010/books`, body)
+      .then(result => {
+        console.log('result data', result.data);
+        // this.state.booksData.push(booksData.data);
+        this.setState({
+          books: result.data
+        });
+      })
+      .catch(error => alert(error));
   }
 
 
   handleDeleteBook = (index) => {
     console.log('X');
-    const {user}=this.props.auth0;
-    const data ={
+    const { user } = this.props.auth0;
+    const data = {
       email: user.email,
     }
-    axios.delete(`${process.env.REACT_SERVER_URL}/books/${index}`,{params:data}).
-    then(result => {
+    axios.delete(`http://localhost:3010/deletebooks/${index}`, { params: data }).then(result => {
 
-      this.setState({
-        books: result.data
-      })
-      console.log('hello inside delete func',this.state.books);
+        this.setState({
+          books: result.data
+        })
+        console.log('hello inside delete func', this.state.books);
 
-    }).catch(error => alert(error))
+      }).catch(error => alert(error))
+
   }
 
   showUpdateForm = (index) => {
     // show the update form
     this.setState({
-      showUpdateFormflag : true,
-      title : this.state.books[index].title,
-      description : this.state.books[index].description,
+      showUpdateFormflag: true,
+      title: this.state.books[index].title,
+      description: this.state.books[index].description,
       status: this.state.books[index].status,
-      idx : index
+      idx: index
     })
-    
+    console.log('index',index);
+
   }
 
-  updateBook = (event) => {
+  handleUpdateBook = (e) => {
     // send req to the server
-    event.preventDefault();
-    const updatedCatData = {
-      catName : event.target.catName.value,
-      catBreed: event.target.catBreed.value,
-      ownerName: this.state.name
+    console.log('Inside update button');
+    e.preventDefault();
+    const updatedBookData = {
+      title: e.target.title.value,
+      description: e.target.description.value,
+      status: e.target.status.value,
+      img_url: e.target.img_url.value,
+      email: this.state.email
     }
     axios
-    .put(`${this.state.server}/updateCat/${this.state.idx}`,updatedCatData)
-    .then(result =>{
-      // console.log(result.data);
-      this.setState({
-        cats : result.data
+      .put(`http://localhost:3010/ubooks/${this.state.idx}`, updatedBookData)
+      .then(result => {
+        // console.log(result.data);
+        // this.setState({
+        //   books: result.data
+        // })
+        this.state.books(result.updatedBookData);
       })
-    })
-    .catch(err => {
-      console.log(err);
-    })
+      .catch(error => alert(error))
   }
 
   render() {
@@ -136,10 +137,20 @@ class BestBooks extends React.Component {
             handleDisplayModal={this.handleDisplayModal}
             handleSubmitForm={this.handleAddBookForm}
           />
+          {this.state.showUpdateFormflag &&
+            <UpdatedForm
+              handleUpdateBook={this.handleUpdateBook}
+              title={this.state.title}
+              description={this.state.description}
+              status={this.state.status}
+              img_url={this.state.img_url}
+
+            />
+          }
 
           < Carousel >
             {this.state.books.length &&
-              this.state.books.map((value,idx) =>
+              this.state.books.map((value, idx) =>
 
                 <Carousel.Item>
                   <img
@@ -151,14 +162,15 @@ class BestBooks extends React.Component {
                   <Carousel.Caption  >
                     <h3 style={{ fontSize: '18px', backgroundColor: "#333", width: "34%", textAlign: 'center', marginLeft: "34%" }}>{value.title}</h3>
                     <p style={{ fontSize: '12px', backgroundColor: "#333", width: "34%", textAlign: 'center', marginLeft: "34%" }}>{value.description}</p>
-                   <div key={idx}>
-                    <Button variant="secondary" onClick={() => this.handleDeleteBook(idx)}>Delete</Button>
+                    <div key={idx}>
+                      <Button variant="secondary" onClick={() => this.handleDeleteBook(idx)}>Delete</Button>
+                      <Button variant="secondary" onClick={() => this.showUpdateForm(idx)}>Update</Button>
                     </div>
                   </Carousel.Caption>
                 </Carousel.Item>
               )}
-          </Carousel >                       
-          </>
+          </Carousel >
+        </>
       </div>
     )
   }

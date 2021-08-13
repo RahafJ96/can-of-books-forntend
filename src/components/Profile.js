@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { withAuth0 } from '@auth0/auth0-react';
-import { Card,Button } from 'react-bootstrap';
+import { Card} from 'react-bootstrap';
 import '../App.css';
 
 
