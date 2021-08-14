@@ -80,7 +80,7 @@ class BestBooks extends React.Component {
     const data = {
       email: user.email,
     }
-    axios.delete(`http://localhost:3010/deletebooks/${index}`, { params: data }).then(result => {
+    axios.delete(`http://localhost:3010/books/${index}`, { params: data }).then(result => {
 
         this.setState({
           books: result.data
@@ -106,7 +106,6 @@ class BestBooks extends React.Component {
 
   handleUpdateBook = (e) => {
     // send req to the server
-    console.log('Inside update button');
     e.preventDefault();
     const updatedBookData = {
       title: e.target.title.value,
@@ -116,22 +115,23 @@ class BestBooks extends React.Component {
       email: this.state.email
     }
     axios
-      .put(`http://localhost:3010/ubooks/${this.state.idx}`, updatedBookData)
-      .then(result => {
-        // console.log(result.data);
-        // this.setState({
+    .put(`http://localhost:3010/books/${this.state.idx}`, updatedBookData)
+    .then(result => {
+      // console.log(result.data);
+      // this.setState({
         //   books: result.data
         // })
         this.state.books(result.updatedBookData);
       })
       .catch(error => alert(error))
+      console.log('Inside update button');
   }
 
   render() {
     return (
       <div>
         <>
-          <Button variant="secondary" onClick={() => this.handleDisplayModal()}>Add a book</Button>
+          <Button variant="primary" className="btnAdd" onClick={() => this.handleDisplayModal()}>Add a book</Button>
           <FormModal
             show={this.state.displayAddModal}
             handleDisplayModal={this.handleDisplayModal}
@@ -163,8 +163,8 @@ class BestBooks extends React.Component {
                     <h3 style={{ fontSize: '18px', backgroundColor: "#333", width: "34%", textAlign: 'center', marginLeft: "34%" }}>{value.title}</h3>
                     <p style={{ fontSize: '12px', backgroundColor: "#333", width: "34%", textAlign: 'center', marginLeft: "34%" }}>{value.description}</p>
                     <div key={idx}>
-                      <Button variant="secondary" onClick={() => this.handleDeleteBook(idx)}>Delete</Button>
-                      <Button variant="secondary" onClick={() => this.showUpdateForm(idx)}>Update</Button>
+                      <Button variant="danger" onClick={() => this.handleDeleteBook(idx)}>Delete</Button>
+                      <Button variant="success" onClick={() => this.showUpdateForm(idx)}>Update</Button>
                     </div>
                   </Carousel.Caption>
                 </Carousel.Item>

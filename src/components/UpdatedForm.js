@@ -1,32 +1,40 @@
 import { Component } from "react";
-// import { Button, Form, Modal } from 'react-bootstrap';
+import { Button, Form, Row, Col, Modal } from 'react-bootstrap';
 import { withAuth0 } from "@auth0/auth0-react";
 // import axios from 'axios';
 
 class UpdateForm extends Component {
 
-  
+
     render() {
 
 
         return (
-        <>
-              <form onSubmit={(e) => this.props.handleUpdateBook(e)}>
-                <fieldset className="bg-white">
-                    <legend>Update Book Info</legend>
-                    <label>Book Title</label>
-                    <input type="text" name="title" defaultValue={this.props.title} />
-                    <label>Book Description</label>
-                    <input type="text" name="description" defaultValue={this.props.description} />
-                    <label>Book Status</label>
-                    <input type="text" name="status" defaultValue={this.props.status} />
-                    <label>Book Image</label>
-                    <input type="text" name="img_url" defaultValue={this.props.img_url} />
-                    <input type="submit" value="Update" />
-                </fieldset>
-            </form>
-        </>
+            <>
+
+                <Form onSubmit={(e) => this.props.handleUpdateBook(e)}>
+                    <fieldset className="bg-white">
+                        <Form.Group as={Col} controlId="formGridEmail">
+                            <Form.Label>Book Title</Form.Label>
+                            <Form.Control type="text" name="title" defaultValue={this.props.img_url} />
+                        </Form.Group>
+                        <Form.Group className="mb-3" controlId="formGridAddress1">
+                            <Form.Label>Book Description</Form.Label>
+                            <Form.Control type="text" name="description" defaultValue={this.props.description} />
+                        </Form.Group>
+                        <Form.Group as={Col} controlId="formGridCity">
+                            <Form.Label>Image URL</Form.Label>
+                            <Form.Control type="text" name="img_url" defaultValue={this.props.img_url} />
+                        </Form.Group>
+                        <Form.Group as={Col} controlId="formGridCity">
+                            <Form.Label>Status</Form.Label>
+                            <Form.Control type="text" name="status" defaultValue={this.props.status} />
+                        </Form.Group>
+                        <Button variant="primary" type="submit">Update</Button>
+                    </fieldset>
+                </Form>
+            </>
         )
-        }       
-   }
+    }
+}
 export default withAuth0(UpdateForm);
