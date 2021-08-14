@@ -80,7 +80,7 @@ class BestBooks extends React.Component {
     const data = {
       email: user.email,
     }
-    axios.delete(`http://localhost:3010/books/${index}`, { params: data }).then(result => {
+    axios.delete(`http://localhost:3010/dbooks/${index}`, { params: data }).then(result => {
 
         this.setState({
           books: result.data
@@ -115,13 +115,13 @@ class BestBooks extends React.Component {
       email: this.state.email
     }
     axios
-    .put(`http://localhost:3010/books/${this.state.idx}`, updatedBookData)
+    .put(`http://localhost:3010/ubooks/${this.state.idx}`, updatedBookData)
     .then(result => {
       // console.log(result.data);
       // this.setState({
         //   books: result.data
         // })
-        this.state.books(result.updatedBookData);
+        this.state.books(result.data);
       })
       .catch(error => alert(error))
       console.log('Inside update button');
